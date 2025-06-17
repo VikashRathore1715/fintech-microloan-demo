@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - CredLite</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+    <script defer src="firebase-config.js"></script>
+</head>
+<body class="bg-white text-gray-900">
+    <header class="p-4 bg-blue-600 text-white text-center text-2xl font-bold">Join the Waitlist</header>
+    <main class="p-6">
+        <form id="waitlistForm" class="space-y-4">
+            <input type="text" placeholder="Your Name" id="name" class="block w-full border p-2 rounded" required>
+            <input type="email" placeholder="Your Email" id="email" class="block w-full border p-2 rounded" required>
+            <textarea placeholder="Why do you need a microloan?" id="reason" class="block w-full border p-2 rounded"></textarea>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Submit</button>
+        </form>
+        <p id="successMessage" class="hidden mt-4 text-green-500">✅ Submitted! We'll reach out soon.</p>
+    </main>
+    <script>
+        document.getElementById("waitlistForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const app = firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            await db.collection("waitlist").add({
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                reason: document.getElementById("reason").value
+            });
+            document.getElementById("successMessage").classList.remove("hidden");
+        });
+    </script>
+</body>
+</html>
